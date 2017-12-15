@@ -1,0 +1,36 @@
+import nibabel as nib
+
+t_map=nib.load('D:/FaceData/mask/spmT_0001.nii')
+anat_img=nib.load('D:/FaceData/anat_img/anat.nii')
+func_img=nib.load('D:/FaceData/func_img/wrarun1.nii')
+from nltools.mask import create_sphere
+mask=create_sphere([43,-78,-13],radius=5)
+
+from nilearn.image import mean_img
+mean_func_img=mean_img(func_img)
+
+from nilearn import plotting
+# Visualizing the three direction image
+plotting.plot_stat_map(t_map,display_mode='ortho',cut_coords=[43,-78,-13],
+	title='Right OFA')
+
+# Visualizing the sigle dirction of image
+plotting.plot_stat_map(t_map,display_mode='z',cut_coords=5,
+	title='Right OFA')
+
+# Adding the edges
+display= plotting.plot_anat(mean_func_img,title='add_edges')
+display.add_edges(anat_img)
+
+# Adding the contours
+display_1=plotting.plot_anat(mean_func_img,title='add_contours',
+	cut_coords=[43,-78,-13])
+display_1.add_contours(mask,title='add_contours with mask_img',cut_coords=[43.-78,-13])
+display_1.add_contours(mask,filled=True,alpha=0.7,level=[0.5],colors='b')
+
+# Adding the markers
+display_2=plotting.plot_anat(mean_func_img,title='add_markers',cut_coords=[43,-78,-13])
+coords=[(43,-78,-13)]
+display_2.add_markers(coords,marker_color='y',marker_size=100)
+
+plotting.show()
