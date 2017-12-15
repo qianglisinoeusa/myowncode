@@ -24,5 +24,5 @@ matplotlib
 pylab
 nilearn
 
-2. if you can't success it , you can cantact me through above email!
+2. if you can't success it , you can contact me through above email!
 
